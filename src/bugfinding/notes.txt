@@ -1,0 +1,20 @@
+programs are of the format:
+
+variable v0
+variable v1
+variable v2
+variable v3
+f1 = XOR v0 v1
+f2 = XOR v2 v3
+f3 = XOR f1 f2
+output f3
+
+# with comments on lines starting with
+# and empty lines being ignored
+
+
+*****************************************************************************
+
+We might want to refactor this so that the comment lines are cut out earlier;
+they form a large burden in terms of keeping track of "null"s all over the place
+etc.
