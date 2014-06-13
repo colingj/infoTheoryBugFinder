@@ -8,6 +8,8 @@ public class Test1App
     public static void main(String[] args)
             throws java.io.IOException, java.io.FileNotFoundException
     {
+        /** set up the program **/
+        
         BufferedReader br 
                 = new BufferedReader(new FileReader("myPrograms/8BitOddParity.pp"));
         String progString="",currentLine;
@@ -19,30 +21,35 @@ public class Test1App
         Program pp = new Program(progString);
 
         System.out.println();
+        System.out.println("Program is \n"+pp);
+        System.out.println();
+        
+        System.out.println();
         System.out.println("#################################################");
         System.out.println();
         
-        String[] variableNames = new String[8];
-        for (int i=0;i<8;i++)
-        {
-            variableNames[i] = "v"+i;
-        }
+        /** set up the target **/
+        
         ArrayList<Object> params = new ArrayList<Object>();
         params.add(8);
         Target tt = new Target("OddParity", params);
         //Target tt = new Target("4BitOddParity", null);
+        
+        /** set up the multitrace **/
 
         MultiTrace mt3 = new MultiTrace((int)Math.pow(2,8),pp);
-        mt3.generateOnCompleteSet(variableNames);
+        mt3.generateOnCompleteSet();
         mt3.generateDifference(tt);
-        System.out.println("Difference on the multitrace");
-        System.out.println(mt3.toStringDifference());
+        //System.out.println("Difference on the multitrace");
+        //System.out.println(mt3.toStringDifference());
 
         System.out.println();
         mt3.generateCompressionLengths();
         System.out.println("Compression lengths of the differences");
         System.out.println(mt3.toStringCompressionLengthsAndProgramLines());
-        
+        System.out.println();
+        System.out.println("The program is correct? "+mt3.isCorrect());
+        System.out.println();
         
         /*
         ArrayList<String> inputStrings = new ArrayList<String>();

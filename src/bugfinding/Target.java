@@ -20,7 +20,6 @@ public class Target
         {
             //odd parity arbitrary size
             int size = (Integer)params.get(0);
-            System.out.println(size);
             int noInputs = (int) Math.pow(2, size);             
             boolean[][] boolStrings = new boolean[noInputs][size];
             boolStrings = BoolUtils.generateBoolSequences(size);

@@ -33,8 +33,9 @@ public class MultiTrace
         }
     }
     
-    public void generateOnCompleteSet(String[] variableNames)
+    public void generateOnCompleteSet()
     {
+        String[] variableNames = pp.getVariableNames();
         ArrayList<Map<String,Boolean>> vv 
                 = new ArrayList<Map<String,Boolean>>();
         boolean[][] boolCombns
@@ -88,6 +89,34 @@ public class MultiTrace
         }
     }
 
+    //is the program giving the correct output?
+    //assumes that the last substantive line is the output line
+    //needs differenceMultiTrace to have been calculated
+    public boolean isCorrect()
+    {
+        boolean ans = true;
+        for (int i=0;i<numberOfTestCases;i++)
+        {
+            if (differenceMultiTrace[programLength-1][i]==false)
+            {
+                ans = false;
+            }
+        }
+        return ans;
+    }
+        
+    public Program getProgram()
+    {
+        return pp;
+    }
+    
+    public int getCompressionLength(int i)
+    {
+        return compressionLengths[i];
+    }
+    
+    
+    
     @Override
     public String toString()
     {
@@ -135,6 +164,31 @@ public class MultiTrace
             {
                 ans += compressionLengths[substantiveLine]+"\t"
                         +pp.getLine(pLine);
+            }
+            ans += "\n";
+        }
+        return ans;   
+    }
+    
+    public String toStringCompressionLengthsAndProgramLines(int bugLocation)
+    {
+        String ans = new String();
+        int programLengthWithComments = pp.getLengthWithComments();
+        for (int pLine=0;pLine<programLengthWithComments;pLine++)
+        {
+            int substantiveLine = pp.getSubstantiveLine(pLine);
+            if (substantiveLine==-999)
+            {
+                ans += "-\t"+pp.getLine(pLine);
+            }
+            else
+            {
+                ans += compressionLengths[substantiveLine]+"\t"
+                        +pp.getLine(pLine);
+                if (substantiveLine==bugLocation)
+                {
+                    ans += "  **** Bug Location";
+                }
             }
             ans += "\n";
         }

@@ -25,6 +25,11 @@ public class Expression
         lineNumber = lineNumberp;
     }
     
+    public boolean isFunction()
+    {
+        return (!(f.equals("VAR")||f.equals("OUT")));
+    }
+    
     public boolean eval(ArrayList<Boolean> i)
     {
         if (f.equals("AND")) { return i.get(0)&&i.get(1); }
@@ -73,9 +78,8 @@ public class Expression
     public String toString()
     {
         String ans = new String();
-        ans += "("+name+" ";
-        for (String s:inputs) { ans += s+" "; }
-        ans.trim();
+        ans += "( "+name+" "+f+" ";
+        if (inputs!=null) { for (String s:inputs) { ans += s+" "; } }
         ans += ")";
         return ans;
     }

@@ -11,6 +11,8 @@ public class Program
     Map<Integer,Integer> commentedToCommentFree;
     //maps the line numbers with comments to those without
     Boolean[] trace;
+    int numberOfVariables;
+    String[] variableNames;
     
     public Program(String progString)
     {
@@ -68,6 +70,21 @@ public class Program
         programLength = lineNumber;
         programLengthWithComments = lineNumberWithComments;
         scanner.close();
+        
+        /** count and store the variable names **/
+        
+        numberOfVariables = 0;
+        for (Expression e: functionList) { if (e.isVar()) { numberOfVariables++; } }
+        variableNames = new String[numberOfVariables];
+        int varIdx = 0;
+        for (Expression e: functionList)
+        {
+            if (e.isVar())
+            {
+                variableNames[varIdx] = e.getVar();
+                varIdx++;
+            }
+        }
     }
     
     public Boolean[] run(Map<String,Boolean> variableValues)
@@ -111,6 +128,16 @@ public class Program
         return trace;
     }
     
+    public String[] getVariableNames()
+    {
+        return variableNames;
+    }
+    
+    public int getNumberOfVariables()
+    {
+        return numberOfVariables;
+    }
+    
     public boolean getOutput()
     {
         return output;
@@ -130,9 +157,35 @@ public class Program
     {
         return commentedToCommentFree.get(line);
     }
-    
+        
     public String getLine(int pLine)
     {
         return programText.get(pLine);
+    }
+    
+    public Expression getFunction(int i)
+    {
+        return functionList.get(i);
+    }
+    
+    @Override
+    public String toString()
+    {
+        String ans = new String();
+        //wibble
+        for (int pLine=0;pLine<programLengthWithComments;pLine++)
+        {
+            int line = getSubstantiveLine(pLine);
+            if (line==-999)
+            {
+                ans += programText.get(pLine)+"\n";
+            }
+            else
+            {
+                ans += functionList.get(line).toString()+"\n";
+            }
+        }
+        
+        return ans;
     }
 }
