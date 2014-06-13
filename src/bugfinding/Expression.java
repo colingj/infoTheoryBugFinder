@@ -36,8 +36,6 @@ public class Expression
         return true;//unreachable default
     }
     
-    public boolean isComment() { return f.contains("COMMENT"); }
-    
     public boolean isVar() { return f.equals("VAR"); }
     
     public String getVar()

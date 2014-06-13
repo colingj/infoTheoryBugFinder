@@ -4,37 +4,34 @@ import java.util.*;
 
 public class Program
 {
-    ArrayList<Expression> functionList;//this is the program
+    ArrayList<Expression> functionList;//this is the program substance
     boolean output;
-    int programLength;
+    int programLength,programLengthWithComments;
     ArrayList<String> programText;
+    Map<Integer,Integer> commentedToCommentFree;
+    //maps the line numbers with comments to those without
     Boolean[] trace;
-
-    public Program()
-    {
-        functionList = new ArrayList<Expression>();
-    }
     
     public Program(String progString)
     {
         functionList = new ArrayList<Expression>();
+        commentedToCommentFree = new HashMap<Integer,Integer>();
         initialise(progString);
     }
     
     public void initialise(String progString)
     {
         Scanner scanner = new Scanner(progString);
-        int lineNumber = 0;
+        int lineNumber = 0; //without comments
+        int lineNumberWithComments = 0;
         programText = new ArrayList<String>();
         while (scanner.hasNextLine()) 
         {
             String line = scanner.nextLine();
             programText.add(line);
-            if (line.isEmpty()||line.substring(0,1).equals("#"))
-            {
-                Expression ee = new Expression("blank","COMMENT",null,lineNumber);
-            }
-            else
+            
+            //if not a comment or blank
+            if (!(line.isEmpty()||line.substring(0,1).equals("#")))
             {
                 String[] tokens = line.split("\\s+");
                 if (tokens[0].equals("variable"))
@@ -58,10 +55,18 @@ public class Program
                             inputs, lineNumber);
                     functionList.add(ee);
                 }
+                commentedToCommentFree.put(lineNumberWithComments, lineNumber);
+                lineNumber++;
             }
-            lineNumber++;
+            else
+            {
+                //if the line is a comment or empty
+                commentedToCommentFree.put(lineNumberWithComments, -999);
+            }
+            lineNumberWithComments++;
         }
         programLength = lineNumber;
+        programLengthWithComments = lineNumberWithComments;
         scanner.close();
     }
     
@@ -71,12 +76,7 @@ public class Program
         Map<String,Boolean> values = new HashMap<String,Boolean>();
         for (Expression e: functionList)
         {
-            if (e.isComment())
-            {
-                trace[e.getLineNumber()] = null;
-                //do nothing
-            }
-            else if (e.isVar())
+            if (e.isVar())
             {
                 values.put(e.getVar(),variableValues.get(e.getVar()));
                 trace[e.getLineNumber()] = variableValues.get(e.getVar());
@@ -119,6 +119,16 @@ public class Program
     public int getLength()
     {
         return programLength;
+    }
+    
+    public int getLengthWithComments()
+    {
+        return programLengthWithComments;
+    }
+    
+    public int getSubstantiveLine(int line)
+    {
+        return commentedToCommentFree.get(line);
     }
     
     public String getLine(int pLine)

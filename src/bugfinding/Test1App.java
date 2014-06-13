@@ -30,8 +30,8 @@ public class Test1App
         ArrayList<Object> params = new ArrayList<Object>();
         params.add(8);
         Target tt = new Target("OddParity", params);
-        System.out.println("tt is "+tt);
         //Target tt = new Target("4BitOddParity", null);
+
         MultiTrace mt3 = new MultiTrace((int)Math.pow(2,8),pp);
         mt3.generateOnCompleteSet(variableNames);
         mt3.generateDifference(tt);

@@ -77,21 +77,14 @@ public class MultiTrace
         compressionLengths = new int[programLength];
         for (int pLine=0;pLine<programLength;pLine++)
         {
-            if (differenceMultiTrace[pLine][0]==null)
+            boolean[] currentTraceLine = new boolean[numberOfTestCases];
+            for (int tCase=0;tCase<numberOfTestCases;tCase++)
             {
-                compressionLengths[pLine] = -999;//marker for comment line
+                currentTraceLine[tCase] 
+                        = differenceMultiTrace[pLine][tCase];
             }
-            else
-            {
-                boolean[] currentTraceLine = new boolean[numberOfTestCases];
-                for (int tCase=0;tCase<numberOfTestCases;tCase++)
-                {
-                    currentTraceLine[tCase] 
-                            = differenceMultiTrace[pLine][tCase];
-                }
-                compressionLengths[pLine] 
-                        = gzipCompression.compress(currentTraceLine);
-            }
+            compressionLengths[pLine] 
+                    = gzipCompression.compress(currentTraceLine);
         }
     }
 
@@ -119,8 +112,7 @@ public class MultiTrace
         {
             for (int tCase=0;tCase<numberOfTestCases;tCase++)
             {
-                if (differenceMultiTrace[pLine][tCase]==null) { ans += "-"; }
-                else if (differenceMultiTrace[pLine][tCase]==true) { ans += "1"; }
+                if (differenceMultiTrace[pLine][tCase]==true) { ans += "1"; }
                 else if (differenceMultiTrace[pLine][tCase]==false) { ans += "0"; }
             }
             ans += "\n";
@@ -128,36 +120,20 @@ public class MultiTrace
         return ans;
     }
     
-    public String toStringCompressionLengths()
-    {
-        String ans = new String();
-        for (int pLine=0;pLine<programLength;pLine++)
-        {
-            if (compressionLengths[pLine]==-999)
-            {
-                ans += "-";
-            }
-            else
-            {
-                ans += compressionLengths[pLine];
-            }
-            ans += "\n";
-        }
-        return ans;   
-    }
-    
     public String toStringCompressionLengthsAndProgramLines()
     {
         String ans = new String();
-        for (int pLine=0;pLine<programLength;pLine++)
+        int programLengthWithComments = pp.getLengthWithComments();
+        for (int pLine=0;pLine<programLengthWithComments;pLine++)
         {
-            if (compressionLengths[pLine]==-999)
+            int substantiveLine = pp.getSubstantiveLine(pLine);
+            if (substantiveLine==-999)
             {
                 ans += "-\t"+pp.getLine(pLine);
             }
             else
             {
-                ans += compressionLengths[pLine]+"\t"
+                ans += compressionLengths[substantiveLine]+"\t"
                         +pp.getLine(pLine);
             }
             ans += "\n";
