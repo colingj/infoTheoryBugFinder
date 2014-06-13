@@ -9,7 +9,7 @@ public class Test1App
             throws java.io.IOException, java.io.FileNotFoundException
     {
         BufferedReader br 
-                = new BufferedReader(new FileReader("myPrograms/4BitOddParity.pp"));
+                = new BufferedReader(new FileReader("myPrograms/8BitOddParity.pp"));
         String progString="",currentLine;
         while ((currentLine = br.readLine()) != null) 
         {
@@ -22,26 +22,26 @@ public class Test1App
         System.out.println("#################################################");
         System.out.println();
         
-        String[] variableNames = new String[4];
-        variableNames[0] = "v0";
-        variableNames[1] = "v1";
-        variableNames[2] = "v2";
-        variableNames[3] = "v3";
-        MultiTrace mt2 = new MultiTrace((int)Math.pow(2,4),pp);
-        mt2.generateOnCompleteSet(variableNames);
-        System.out.println("Multitrace");
-        System.out.println(mt2);
-        
-        System.out.println();
-        Target tt = new Target("4BitOddParity");
-        mt2.generateDifference(tt);
+        String[] variableNames = new String[8];
+        for (int i=0;i<8;i++)
+        {
+            variableNames[i] = "v"+i;
+        }
+        ArrayList<Object> params = new ArrayList<Object>();
+        params.add(8);
+        Target tt = new Target("OddParity", params);
+        System.out.println("tt is "+tt);
+        //Target tt = new Target("4BitOddParity", null);
+        MultiTrace mt3 = new MultiTrace((int)Math.pow(2,8),pp);
+        mt3.generateOnCompleteSet(variableNames);
+        mt3.generateDifference(tt);
         System.out.println("Difference on the multitrace");
-        System.out.println(mt2.toStringDifference());
+        System.out.println(mt3.toStringDifference());
 
         System.out.println();
-        mt2.generateCompressionLengths();
+        mt3.generateCompressionLengths();
         System.out.println("Compression lengths of the differences");
-        System.out.println(mt2.toStringCompressionLengthsAndProgramLines());
+        System.out.println(mt3.toStringCompressionLengthsAndProgramLines());
         
         
         /*
