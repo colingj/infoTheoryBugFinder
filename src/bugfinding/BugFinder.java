@@ -16,8 +16,10 @@ public class BugFinder
         int numberOfTestCases = (int)Math.pow(2,pp.getNumberOfVariables());
         mt = new MultiTrace(numberOfTestCases,pp);
         mt.generateOnCompleteSet();
+        //System.out.println();
+        //System.out.println(mt);
+        //System.out.println();
         mt.generateDifference(tt);
-        System.out.println();
         mt.generateCompressionLengths();
         bugFound = false;
     }
@@ -38,19 +40,19 @@ public class BugFinder
             mostRecentlySeen.put(ee.getName(),cc);
             if (ee.isFunction())
             {
-                System.out.println("***");
+                //System.out.println("***");
                 ArrayList<String> inputs = ee.getInputs();
                 int maxCompress = Integer.MIN_VALUE;
                 for (String s: inputs)
                 {
-                    System.out.println("input is "+s
-                            +" with value "+mostRecentlySeen.get(s));
+                    //System.out.println("input is "+s
+                    //        +" with value "+mostRecentlySeen.get(s));
                     int val = mostRecentlySeen.get(s);
                     if (val>maxCompress) { maxCompress = val; }
                 }
-                System.out.println("minCompress is"+maxCompress);
-                System.out.println("cc is"+cc);
-                if (cc>=maxCompress)
+                //System.out.println("maxCompress is"+maxCompress);
+                //System.out.println("cc is"+cc);
+                if (cc>maxCompress)
                 {
                     bugFound = true;
                     bugLocation = pLine;

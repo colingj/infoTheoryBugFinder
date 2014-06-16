@@ -16,7 +16,7 @@ f2 = XOR v4 v5
 f3 = XOR v6 v7
 
 #second level
-f4 = XOR f0 f1
+f4 = AND f0 f1
 f5 = XOR f2 f3
 
 #third and final level

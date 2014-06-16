@@ -11,7 +11,8 @@ public class Test2App
     /** set up the program **/
     
     BufferedReader br 
-            = new BufferedReader(new FileReader("myPrograms/8BitOddParity.pp"));
+           // = new BufferedReader(new FileReader("myPrograms/8BitOddParity.pp"));
+            = new BufferedReader(new FileReader("myPrograms/3BitMux.pp"));
     String progString="",currentLine;
     while ((currentLine = br.readLine()) != null)  { progString += currentLine+"\n"; }
     
@@ -19,7 +20,8 @@ public class Test2App
         
     ArrayList<Object> params = new ArrayList<Object>();
     params.add(8);
-    Target tt = new Target("OddParity", params);
+    //Target tt = new Target("OddParity", params);
+    Target tt = new Target("3BitMux", null);
     
     /** set up and run the bugfinder **/
     

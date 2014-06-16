@@ -34,6 +34,10 @@ public class Target
                 if (total%2==1) { tt[i] = true; }
             }
         }
+        else if (type.equals("3BitMux"))
+        {
+            tt = new boolean[]{false,false,true,true,false,true,false,true};
+        }
         else 
         {
             System.err.println("In Target, type not known.");
