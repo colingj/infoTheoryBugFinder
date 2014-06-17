@@ -85,6 +85,23 @@ public final class BoolUtils {
 
 		return inputs;
 	}
+        
+        public static boolean[][] generateBoolSequencesBigEndian(final int noBits) {
+            final int noInputs = (int) Math.pow(2, noBits);
+            
+            final boolean[][] inputs = new boolean[noInputs][noBits];
+            
+            for (int i = 0; i < noBits; i++) {
+                final int rep = (int) Math.pow(2, i + 1);
+
+                for (int j = 0; j < noInputs; j++) {
+                    inputs[j][noBits-1-i] = (j % rep) > Math.floor(rep / 2) - 1;
+                }
+            }
+
+		return inputs;
+	}
+        
 
 	/**
 	 * Provides an alternative to

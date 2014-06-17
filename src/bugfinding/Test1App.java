@@ -43,6 +43,10 @@ public class Test1App
         //System.out.println("Difference on the multitrace");
         //System.out.println(mt3.toStringDifference());
 
+        mt3.generateIGR();
+        
+        System.exit(0);
+        
         System.out.println();
         mt3.generateCompressionLengths();
         System.out.println("Compression lengths of the differences");

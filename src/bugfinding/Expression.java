@@ -22,7 +22,6 @@ public class Expression
         {
         inputs = new ArrayList<String>(inputsp); //using copy constructor
         }
-        lineNumber = lineNumberp;
     }
     
     public boolean isFunction()
@@ -37,6 +36,7 @@ public class Expression
         else if (f.equals("XOR")) { return ((i.get(0)&& !i.get(1)) 
                 || (i.get(1) && !i.get(0))); }
         else if (f.equals("NOT")) { return !i.get(0); }
+        else if (f.equals("IF")) { return i.get(0)?i.get(1):i.get(2); }
         else { System.err.println("Error in Expression."); System.exit(1); }
         return true;//unreachable default
     }

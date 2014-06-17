@@ -39,7 +39,7 @@ public class MultiTrace
         ArrayList<Map<String,Boolean>> vv 
                 = new ArrayList<Map<String,Boolean>>();
         boolean[][] boolCombns
-                = BoolUtils.generateBoolSequences(variableNames.length);
+                = BoolUtils.generateBoolSequencesBigEndian(variableNames.length);
         //this returns [indexing the text cases][variables within each test case]
         for (int tc=0;tc<(int)Math.pow(2,variableNames.length);tc++)
         {
@@ -60,7 +60,7 @@ public class MultiTrace
         {
             for (int tCase=0;tCase<numberOfTestCases;tCase++)
             {
-                if (theMultiTrace[pLine][tCase]==null)
+                if (theMultiTrace[pLine][tCase]==null)//wibble: might be redundant
                 {
                     differenceMultiTrace[pLine][tCase] = null;
                 }
@@ -88,8 +88,67 @@ public class MultiTrace
                     = gzipCompression.compress(currentTraceLine);
         }
     }
+    
+    public void generateIGR()
+    {
+        //assumes that we have run "generate difference"
 
-    //is the program giving the correct output?
+        /** generate dependencies on each program line **/
+        
+        //to store dependencies by program line
+        ArrayList<ArrayList<String>> dependenciesByLine 
+                = new ArrayList<ArrayList<String>>();
+        //to store dependency lists for functions
+        Map<String,ArrayList<String>> dependencyMap 
+                = new HashMap<String,ArrayList<String>>();
+        for (int pLine=0;pLine<programLength;pLine++)
+        {
+            Expression ee = pp.getFunction(pLine);
+            if (ee.isVar())
+            {
+                ArrayList<String> variable = new ArrayList<String>();
+                variable.add(ee.getVar());
+                dependenciesByLine.add(variable);
+            }
+            else if (ee.isFunction())
+            {
+                ArrayList<String> variables = new ArrayList<String>();
+                ArrayList<String> inputs = ee.getInputs();
+                String name = ee.getName();
+                for (String ff: inputs)
+                {
+                    if (dependencyMap.containsKey(ff))
+                    {
+                        //add all of the previously dependent variables.
+                        variables.addAll(dependencyMap.get(ff));
+                    }
+                    else
+                    {
+                        variables.add(ff);
+                    }
+                }
+                dependenciesByLine.add(variables);
+                dependencyMap.put(name,variables);
+            }
+            else if (ee.isOutput()) 
+            {
+                String name = ee.getName();
+                ArrayList<String> temp = dependencyMap.get(name);
+                dependenciesByLine.add(temp);
+            }
+        }
+        
+        for (ArrayList<String> als: dependenciesByLine)
+        {
+            for (String dd: als)
+            {
+                System.out.print(dd+" ");
+            }
+            System.out.println();
+        }
+    }
+
+    //this method calculates whether the program is giving the correct output.
     //assumes that the last substantive line is the output line
     //needs differenceMultiTrace to have been calculated
     public boolean isCorrect()
