@@ -22,6 +22,7 @@ public class Expression
         {
         inputs = new ArrayList<String>(inputsp); //using copy constructor
         }
+        lineNumber = lineNumberp;
     }
     
     public boolean isFunction()

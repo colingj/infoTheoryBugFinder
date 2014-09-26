@@ -8,15 +8,7 @@ public class Target
     
     public Target(String type, ArrayList<Object> params)
     {
-        if (type.equals("4BitOddParity"))
-        {
-            tt = new boolean[]{
-            false,true,true,false,
-            true,false,false,true,
-            true,false,false,true,
-            false,true,true,false};
-        }
-        else if (type.equals("OddParity"))
+        if (type.equals("OddParity"))
         {
             //odd parity arbitrary size
             int size = (Integer)params.get(0);
@@ -43,7 +35,7 @@ public class Target
             //addressSize is number of address variables
             int addressSize = (Integer)params.get(0);
             int size = addressSize + (int)Math.pow(2,addressSize);
-                        int noInputs = (int) Math.pow(2, size);             
+            int noInputs = (int) Math.pow(2, size);             
             boolean[][] boolStrings = new boolean[noInputs][size];
             boolStrings = BoolUtils.generateBoolSequencesBigEndian(size);
             tt = new boolean[noInputs];

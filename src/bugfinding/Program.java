@@ -114,6 +114,7 @@ public class Program
                 values.put(e.getName(),e.eval(inputs));
                 trace[e.getLineNumber()] = e.eval(inputs);
             }
+            
             /*
             System.out.println("** current state of program: ");
             System.out.print("   ");
@@ -124,6 +125,7 @@ public class Program
             }
             System.out.println();
             */
+            
         }
         return trace;
     }

@@ -11,7 +11,7 @@ public class Test1App
         /** set up the program **/
         
         BufferedReader br 
-                = new BufferedReader(new FileReader("myPrograms/8BitOddParity.pp"));
+                = new BufferedReader(new FileReader("myPrograms/11BitMux.pp"));
         String progString="",currentLine;
         while ((currentLine = br.readLine()) != null) 
         {
@@ -19,10 +19,6 @@ public class Test1App
         }
                 
         Program pp = new Program(progString);
-
-        System.out.println();
-        System.out.println("Program is \n"+pp);
-        System.out.println();
         
         System.out.println();
         System.out.println("#################################################");
@@ -31,17 +27,18 @@ public class Test1App
         /** set up the target **/
         
         ArrayList<Object> params = new ArrayList<Object>();
-        params.add(8);
-        Target tt = new Target("OddParity", params);
-        //Target tt = new Target("4BitOddParity", null);
+        //params.add(8);
+        //Target tt = new Target("OddParity", params);
+        params.add(11);
+        Target tt = new Target("Mux", params);
         
         /** set up the multitrace **/
 
-        MultiTrace mt3 = new MultiTrace((int)Math.pow(2,8),pp);
+        MultiTrace mt3 = new MultiTrace((int)Math.pow(2,4),pp);
         mt3.generateOnCompleteSet();
         mt3.generateDifference(tt);
-        //System.out.println("Difference on the multitrace");
-        //System.out.println(mt3.toStringDifference());
+        System.out.println("Difference on the multitrace");
+        System.out.println(mt3.toStringDifference());
 
         mt3.generateIGR();
         
@@ -49,7 +46,7 @@ public class Test1App
         
         System.out.println();
         mt3.generateCompressionLengths();
-        System.out.println("Compression lengths of the differences");
+        System.out.println("Information distances of the differences");
         System.out.println(mt3.toStringCompressionLengthsAndProgramLines());
         System.out.println();
         System.out.println("The program is correct? "+mt3.isCorrect());
